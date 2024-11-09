@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 
-const Filter = () => {
+const Filter = ({ handleSortByPrice}) => {
   return (
     <>
     <div className="bg-white rounded-xl shadow-md">
@@ -18,11 +19,11 @@ const Filter = () => {
                       <span className="w-4 h-4 border-2 border-gray-400 rounded-full mr-1"></span>
                       <span className="px-2 py-1 text-gray-800">New Released</span>
                   </li>
-                  <li className="flex items-center">
+                      <li onClick={() => handleSortByPrice("lth")} className="flex items-center cursor-pointer">
                       <span className="w-4 h-4 border-2 border-gray-400 rounded-full mr-1"></span>
                       <span className="px-2 py-1 text-gray-800">Price - Low to High</span>
                   </li>
-                  <li className="flex items-center">
+                      <li onClick={() => handleSortByPrice("htl")} className="flex items-center cursor-pointer">
                       <span className="w-4 h-4 border-2 border-gray-400 rounded-full mr-1"></span>
                       <span className="px-2 py-1 text-gray-800">Price - High to Low</span>
                   </li>
