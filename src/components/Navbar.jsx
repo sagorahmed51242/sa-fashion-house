@@ -9,11 +9,19 @@ import { myContextAPI } from '../utilities'
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const {cartCount} = useContext(myContextAPI);
+  const {cartCount ,user,logOut} = useContext(myContextAPI);
 
   const [searchText, setSearchText] = useState("");
 
 
+  const handleLotOut = async() => {
+    try {
+      await logOut();
+      alert("logged Out");
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
 
   const handleSearchText = (e) => {
     setSearchText(e.target.value);
@@ -41,8 +49,8 @@ const Navbar = () => {
         </div>
         <div className='flex items-center gap-10'>
           <div className='flex items-center gap-2 cursor-pointer'>
-            <div><FaRegUserCircle className='text-gray-300 text-2xl' /></div>
-            <div className='text-lg font-semibold text-gray-300'>Hello, Sign In</div>
+            {user && <div onClick={() => navigate('/profile')} className='pr-5 flex items-center gap-2'><FaRegUserCircle className='text-gray-300 text-4xl' /> <p className="text-white text-xl font-bold">{user.email.split('@')[0]}</p></div>}
+            {user ? <button className="border px-3 py-2 rounded-lg border-purple-600 font-bold" onClick={handleLotOut}>Log out</button> : <div onClick={() => navigate('/sign-in')} className='text-lg font-semibold text-gray-300 border px-3 py-2 rounded-lg'>Sign In</div>}
           </div>
           <div onClick={()=>navigate("/cart")} className='cursor-pointer relative'>
             <FiShoppingCart className='text-gray-200 text-2xl' />

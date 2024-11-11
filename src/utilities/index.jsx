@@ -1,10 +1,46 @@
 /* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from "react";
-
+import { auth } from './../firebaseconfig'
+import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 export const myContextAPI = createContext();
 
 export const ContextProvier = ({ children }) => {
     const [cartCount, setCartCount] = useState(0);
+    const [isLogIn, setLogIn] = useState(true);
+    const [user, setUser] = useState(null);
+
+
+    const signUp = (email, password) =>{
+        return createUserWithEmailAndPassword(auth, email, password);
+    }
+
+    const logIn = (email, password) => {
+        return signInWithEmailAndPassword(auth,email,password);
+    }
+
+    const logOut = () =>{
+        return signOut(auth);
+    }
+
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth,(currentUser) =>{
+            setUser(currentUser);
+        });
+        return unsubscribe;
+    },[])
+
+    const logInWithGoogle = async() => {
+        const provider = new GoogleAuthProvider(auth);
+        try {
+            const result = await signInWithPopup(auth, provider);
+            setUser(result.user)
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+
 
     const getICartItemFromLocalStorage = () => {
         const currentCart = localStorage.getItem("cart");
@@ -43,12 +79,12 @@ export const ContextProvier = ({ children }) => {
 
     const clearCart = () => {
         localStorage.removeItem("cart");
-        setCartCount(0); 
+        setCartCount(0);
     };
 
     return (
         <myContextAPI.Provider
-            value={{ cartCount, clearCart, setCartItemIntoLocatStorage, getICartItemFromLocalStorage, removeItemFromCart }}
+            value={{ cartCount, logInWithGoogle, logOut, user, signUp,logIn,isLogIn, setLogIn, clearCart, setCartItemIntoLocatStorage, getICartItemFromLocalStorage, removeItemFromCart }}
         >
             {children}
         </myContextAPI.Provider>

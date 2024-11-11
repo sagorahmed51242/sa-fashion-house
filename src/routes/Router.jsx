@@ -5,6 +5,9 @@ import Error404 from "../pages/Error404";
 import Home from "../pages/Home";
 import ProductDetails from "../pages/ProductDetails";
 import CartPage from "../pages/CartPage";
+import UserSingInOrResisterPage from "../pages/UserSingInOrResisterPage";
+import UserProfile from "../pages/UserProfile";
+import ProtectedRoutes from "../components/ProtectedRoutes";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +35,18 @@ const router = createBrowserRouter([
             {
                 path: "/cart",
                 element: <CartPage />
+            },
+            {
+                path:'/sign-in',
+                element:<UserSingInOrResisterPage/>
+            },
+            {
+                path:'/profile',
+                element: (
+                <ProtectedRoutes>
+                    < UserProfile />
+                </ProtectedRoutes>
+                )
             }
         ]
     },
